@@ -1,15 +1,50 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import sys
+import os
+
+# 添加项目根目录到Python路径
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, project_root)
+
+def check_dependencies():
+    """检查必要的依赖包"""
+    required_packages = {
+        'akshare': 'akshare',
+        'pandas': 'pandas', 
+        'requests': 'requests',
+        'sqlite3': 'sqlite3'
+    }
+    
+    missing_packages = []
+    for package, import_name in required_packages.items():
+        try:
+            __import__(import_name)
+        except ImportError:
+            missing_packages.append(package)
+    
+    if missing_packages:
+        print(f"❌ 缺少必要的依赖包: {', '.join(missing_packages)}")
+        print("请运行以下命令安装依赖:")
+        print("pip install -r requirements.txt")
+        return False
+    
+    return True
+
+# 在main函数开始前检查依赖
+if not check_dependencies():
+    sys.exit(1)
+
+# 原有的导入
 import akshare as ak
 import pandas as pd
 import sqlite3
-import os
 from datetime import datetime
-import sys
 import requests
 import time
 
+# ... 其余代码保持不变 ...
 def create_database_schema(conn):
     """创建与您数据库结构相同的表"""
     cursor = conn.cursor()
