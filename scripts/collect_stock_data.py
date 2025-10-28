@@ -13,8 +13,8 @@ def check_dependencies():
     required_packages = {
         'akshare': 'akshare',
         'pandas': 'pandas', 
-        'requests': 'requests',
-        'sqlite3': 'sqlite3'
+        'requests': 'requests'
+        # sqlite3 是Python标准库，不需要检查
     }
     
     missing_packages = []
@@ -27,7 +27,7 @@ def check_dependencies():
     if missing_packages:
         print(f"❌ 缺少必要的依赖包: {', '.join(missing_packages)}")
         print("请运行以下命令安装依赖:")
-        print("pip install -r requirements.txt")
+        print("pip install akshare pandas requests")
         return False
     
     return True
@@ -39,7 +39,7 @@ if not check_dependencies():
 # 原有的导入
 import akshare as ak
 import pandas as pd
-import sqlite3
+import sqlite3  # 这是Python标准库
 from datetime import datetime
 import requests
 import time

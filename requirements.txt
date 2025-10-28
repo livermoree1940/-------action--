@@ -2,30 +2,27 @@
 # 生成时间: 2024-01-01
 
 # 核心数据获取
-akshare==1.11.91
+akshare>=1.11.91
 
 # 数据处理
-pandas==2.0.3
-numpy==1.24.3
+pandas>=2.0.3
+numpy>=1.24.3
 
 # HTTP请求
-requests==2.31.0
-urllib3==2.0.4
+requests>=2.31.0
+urllib3>=2.0.4
 
 # 日期时间处理
-python-dateutil==2.8.2
-pytz==2023.3
-
-# 数据库
-sqlite3
+python-dateutil>=2.8.2
+pytz>=2023.3
 
 # 其他工具
-lxml==4.9.3
-beautifulsoup4==4.12.2
-pyquery==2.0.0
+lxml>=4.9.3
+beautifulsoup4>=4.12.2
+pyquery>=2.0.0
 
 # 兼容性包
-six==1.16.0
-charset-normalizer==3.2.0
-idna==3.4
-certifi==2023.7.22
+six>=1.16.0
+charset-normalizer>=3.2.0
+idna>=3.4
+certifi>=2023.7.22
