@@ -1,0 +1,24 @@
+
+    📋 数据更新完成 - 2025-10-30 07:27
+    
+    📁 数据库文件: data/daily_price_update.db
+    
+    🔄 导入到主数据库的SQL命令:
+    
+    -- 方法1: 使用ATTACH数据库
+    ATTACH DATABASE 'data/daily_price_update.db' AS update_db;
+    
+    -- 插入或更新数据到主表
+    INSERT OR REPLACE INTO main.daily_price 
+    SELECT * FROM update_db.daily_price;
+    
+    -- 方法2: 直接导入（如果数据库在同一目录）
+    INSERT OR REPLACE INTO daily_price 
+    SELECT * FROM daily_price_update.daily_price;
+    
+    📊 数据特征:
+    - 股票代码: 6位数字格式
+    - 价格数据: 实际价格（未复权）
+    - 成交额: 元为单位
+    - 数据日期: 2025-10-30
+    
