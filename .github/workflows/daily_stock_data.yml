@@ -2,8 +2,9 @@ name: Daily A-Share Data Collection
 
 on:
   schedule:
-    # 每天下午3:05运行 (UTC+8 北京时间)
-    - cron: '5 7 * * *'
+    # 每天下午3:05运行 (北京时间 Asia/Shanghai)
+    - cron: '5 15 * * *'
+      timezone: 'Asia/Shanghai'
   workflow_dispatch:  # 允许手动触发
 
 permissions:
