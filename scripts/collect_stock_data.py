@@ -40,11 +40,76 @@ if not check_dependencies():
 import akshare as ak
 import pandas as pd
 import sqlite3  # 这是Python标准库
-from datetime import datetime
+from datetime import datetime, timedelta
 import requests
 import time
 
-# ... 其余代码保持不变 ...
+def is_trading_day():
+    """
+    判断今天是否是交易日
+    返回: True(交易日) / False(非交易日)
+    """
+    try:
+        # 获取当前日期
+        today = datetime.now().strftime('%Y%m%d')
+        
+        # 方法1: 使用akshare获取交易日历
+        print("正在获取交易日历...")
+        trade_date_df = ak.tool_trade_date_hist_sina()
+        
+        # 检查今天是否在交易日历中
+        today_str = datetime.now().strftime('%Y-%m-%d')
+        is_trade_day = today_str in trade_date_df['trade_date'].astype(str).values
+        
+        if is_trade_day:
+            print(f"✅ {today_str} 是交易日，继续执行数据收集")
+        else:
+            print(f"⏸️ {today_str} 是非交易日，跳过数据收集")
+            
+        return is_trade_day
+        
+    except Exception as e:
+        print(f"⚠️ 交易日历获取失败: {e}，使用备用判断方法")
+        
+        # 备用方法: 基于星期和简单节假日判断
+        return backup_trading_day_check()
+
+def backup_trading_day_check():
+    """
+    备用交易日判断方法
+    基于星期判断 + 简单节假日排除
+    """
+    today = datetime.now()
+    weekday = today.weekday()  # 周一=0, 周日=6
+    
+    # 周末肯定不是交易日
+    if weekday >= 5:  # 周六、周日
+        print(f"⏸️ {today.strftime('%Y-%m-%d')} 是周末，跳过数据收集")
+        return False
+    
+    # 简单节假日判断（这里可以添加更多的固定节假日）
+    holiday_ranges = [
+       
+        # 国庆节（10月1日至7日）
+        ('10-01', '10-07'),
+        
+        # 劳动节（5月1日）
+        ('05-01', '05-01'),
+        
+        # 元旦（1月1日）
+        ('01-01', '01-01'),
+    ]
+    
+    today_md = today.strftime('%m-%d')
+    
+    for start, end in holiday_ranges:
+        if start <= today_md <= end:
+            print(f"⏸️ {today.strftime('%Y-%m-%d')} 是节假日({start}至{end})，跳过数据收集")
+            return False
+    
+    print(f"✅ {today.strftime('%Y-%m-%d')} 可能是交易日（使用备用判断），继续执行数据收集")
+    return True
+
 def create_database_schema(conn):
     """创建与您数据库结构相同的表"""
     cursor = conn.cursor()
@@ -198,6 +263,11 @@ def save_to_database(data, db_path):
 
 def main():
     """主函数"""
+    # 首先判断今天是否是交易日
+    if not is_trading_day():
+        print("今日非交易日，程序退出")
+        sys.exit(0)
+    
     # 创建数据目录
     data_dir = 'data'
     os.makedirs(data_dir, exist_ok=True)
