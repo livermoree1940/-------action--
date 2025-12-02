@@ -63,8 +63,10 @@ def merge_databases(main_db_path, update_db_path):
 def main():
     """主函数"""
     # 数据库路径配置
-    main_db_path = r'数据库\data\a_stock.db'  # 您的主数据库
-    update_db_path = r"C:\Users\LYY\Downloads\daily_price_update (5).db"  # GitHub Action生成的更新数据库
+    # main_db_path = r'数据库\data\a_stock.db'  # 您的主数据库
+    main_db_path = r'C:\Users\LYY\Desktop\数据库\数据库\data\a_stock.db'  # 您的主数据库
+
+    update_db_path = r"daily_price_update.db"  # GitHub Action生成的更新数据库
     
     print("开始合并数据库...")
     print(f"主数据库: {main_db_path}")
